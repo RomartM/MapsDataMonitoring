@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alert</title>
+</head>
+<body>
+<p>
+    Someone has recently made an edit to your Monitored Site.
+    Please insure that the below are correct.
+</p>
+<p>After Changes: <b>{{ result_difference }}</b></p>
+<p>Before Changes: <b>{{ result_counterpart }}</b></p>
+
+<hr>
+<p>
+    UID Data Reference Used: <b>[{{ rd_manifest.uid }} - {{ rd_manifest.uid }}]</b>
+</p>
+<p style="text-align:center;">
+    MapsDataMonitoring Micro System - {{ version }} Version
+</p>
+</body>
+</html>

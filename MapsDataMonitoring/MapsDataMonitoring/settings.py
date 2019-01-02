@@ -58,7 +58,7 @@ ROOT_URLCONF = 'MapsDataMonitoring.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,3 +140,6 @@ EMAIL_HOST_PASSWORD = '(edEND4f+EghWKD59@]`DeR)'
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# System Version
+APP_VERSION = "0.1.dev1"

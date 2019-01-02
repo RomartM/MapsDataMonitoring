@@ -6,7 +6,8 @@ from .models import DataSet, SiteManifest, DataReport
 # JSON Difference Detector
 from jsondiff import diff
 # Backend Email Dependencies
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.conf import settings
 # Unique ID Generator Dependency
 from uuid import uuid4
@@ -73,27 +74,35 @@ def data_report_logger(data_list, data_obj):
         # Sort newly DataList Data
         fresh_data = data_obj.latest('timestamp')
         # Data Changes Execution
-        result = diff(json.loads(data_list.data),
+        result_difference = diff(json.loads(data_list.data),
                       json.loads(fresh_data.data))
         result_counterpart = diff(json.loads(fresh_data.data),
                       json.loads(data_list.data))
         # Create DataReport Entry
         DataReport.objects.create(
-            difference=result,
+            difference=result_difference,
             base_referer=data_list,
             data_referer=fresh_data
         )
         # Checks whether data is modified
-        print(result)
-        if result != {}:
+        print(result_difference)
+        if result_difference != {}:
             # Send Report if some data changes detected
             email_list = []
+            # Generate Email List
             [email_list.append(r.email) for r in data_list.site.email_recipients.all()]
             print(email_list)
+            # Send Email Report
             alert_email_report(
                 dict([
                     ('subject', 'Alert - Changes Detected - %s' % data_list.site.name),
-                    ('message', 'After Changes: %s \n Before Changes: %s' % (result, result_counterpart)),
+                    ('message', dict([('result_difference', result_difference),
+                                      ('result_counterpart', result_counterpart),
+                                      ('rd_manifest', data_list),
+                                      ('rc_manifest', fresh_data),
+                                      ('app_manifest', dict([
+                                          ('version', settings.APP_VERSION)
+                                      ]))])),
                     ('recipient_list', email_list)
                 ])
             )
@@ -119,8 +128,11 @@ def alert_email_report(data_manifest):
         # See settings.py for EMAIL_HOST_USER modification
         email_from = settings.EMAIL_HOST_USER
         recipient_list = data_manifest.get('recipient_list')
+        html_body = render_to_string("email_alert_body.html", message)
+        msg = EmailMultiAlternatives(subject, "", email_from, recipient_list)
+        msg.attach_alternative(html_body, "text/html")
         # Send Email
-        send_mail(subject, message, email_from, recipient_list)
+        msg.send()
         print('Message Sent')
         # todo: more specific Error handling
     except IndexError:
