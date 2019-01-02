@@ -34,9 +34,9 @@ def task_number_one():
             # Try to remove unnecessary data
             [i.pop('photo_reference') for i in dict_data.get('result').get('photos')]
         except AttributeError:
-            return print(content=str('Google Maps API Usage Error: %s' % dict_data.get('status')))
+            return print(str('Google Maps API Usage Error: %s' % dict_data.get('status')))
         except ConnectionError:
-            return print(content=str('Failed Contacting Google API Servers'))
+            return print(str('Failed Contacting Google API Servers'))
         # Create and Save Data to Database
         stat = DataSet.objects.create(
             uid=str(uuid4()),
