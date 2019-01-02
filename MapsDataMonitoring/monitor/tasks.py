@@ -75,6 +75,8 @@ def data_report_logger(data_list, data_obj):
         # Data Changes Execution
         result = diff(json.loads(data_list.data),
                       json.loads(fresh_data.data))
+        result_counterpart = diff(json.loads(fresh_data.data),
+                      json.loads(data_list.data))
         # Create DataReport Entry
         DataReport.objects.create(
             difference=result,
@@ -85,15 +87,16 @@ def data_report_logger(data_list, data_obj):
         print(result)
         if result != {}:
             # Send Report if some data changes detected
-            """
+            email_list = []
+            [email_list.append(r.email) for r in data_list.site.email_recipients.all()]
+            print(email_list)
             alert_email_report(
                 dict([
-                    ('subject', 'data'),
-                    ('message', 'data'),
-                    ('recipient_list', 'data')
+                    ('subject', 'Alert - Changes Detected - %s' % data_list.site.name),
+                    ('message', 'After Changes: %s \n Before Changes: %s' % (result, result_counterpart)),
+                    ('recipient_list', email_list)
                 ])
             )
-            """
             print('Changes Detected!')
             return 'Email Sent'
         else:
@@ -120,6 +123,6 @@ def alert_email_report(data_manifest):
         send_mail(subject, message, email_from, recipient_list)
         print('Message Sent')
         # todo: more specific Error handling
-    except:
+    except IndexError:
         print('Something went wrong')
 
