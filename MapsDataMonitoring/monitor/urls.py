@@ -7,5 +7,6 @@ app_name = "monitor"
 
 
 urlpatterns = [
-    path('query', views.do_query, name="crawl")
+    path('query', views.do_query, name="crawl"),
+    path('test', views.test, name="test")
 ]
