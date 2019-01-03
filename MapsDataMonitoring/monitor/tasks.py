@@ -7,7 +7,8 @@ from .models import DataSet, SiteManifest, DataReport
 from jsondiff import diff
 # Backend Email Dependencies
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
+from django.template.loader import get_template
+from django.template import Context
 from django.conf import settings
 # Unique ID Generator Dependency
 from uuid import uuid4
@@ -127,8 +128,9 @@ def alert_email_report(data_manifest):
         message = data_manifest.get('message')
         # See settings.py for EMAIL_HOST_USER modification
         email_from = settings.EMAIL_HOST_USER
+        email_template = get_template("email_alert_body.html")
         recipient_list = data_manifest.get('recipient_list')
-        html_body = render_to_string("email_alert_body.html", message)
+        html_body = email_template.render(message)
         msg = EmailMultiAlternatives(subject, "", email_from, recipient_list)
         msg.attach_alternative(html_body, "text/html")
         # Send Email

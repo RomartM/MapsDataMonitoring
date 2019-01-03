@@ -1,16 +1,30 @@
+{% load data_parser %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Alert</title>
+    <style>
+        .value {
+            font-weight: bold;
+        }
+        .strike {
+            color:red;
+            text-decoration: line-through;
+        }
+        .new {
+            color: blue;
+        }
+    </style>
 </head>
 <body>
 <p>
     Someone has recently made an edit to your Monitored Site.
     Please insure that the below are correct.
 </p>
-<p>After Changes: <b>{{ result_difference }}</b></p>
-<p>Before Changes: <b>{{ result_counterpart }}</b></p>
+<p>
+    {{ rd_manifest.data|data_to_html }}
+</p>
 
 <hr>
 <p>
