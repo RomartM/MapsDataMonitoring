@@ -142,4 +142,4 @@ EMAIL_HOST_PASSWORD = '(edEND4f+EghWKD59@]`DeR)'
 STATIC_URL = '/static/'
 
 # System Version
-APP_VERSION = "0.1.dev1"
+APP_VERSION = "0.2.dev1"
