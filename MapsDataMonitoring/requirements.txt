@@ -9,7 +9,7 @@ django-celerybeat-status==0.0.10
 django-timezone-field==3.0
 idna==2.8
 jsondiff==1.1.2
-kombu==4.2.2
+kombu==4.2.1
 python-crontab==2.3.5
 python-dateutil==2.7.5
 pytz==2018.7
