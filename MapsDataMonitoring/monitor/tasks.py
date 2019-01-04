@@ -8,7 +8,7 @@ from jsondiff import diff
 # Backend Email Dependencies
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
-from django.template import Context
+import urllib3
 from django.conf import settings
 # Unique ID Generator Dependency
 from uuid import uuid4
@@ -16,6 +16,7 @@ from uuid import uuid4
 import requests
 # JSON Dependency
 import json
+
 
 
 @task()
@@ -86,13 +87,12 @@ def data_report_logger(data_list, data_obj):
             data_referer=fresh_data
         )
         # Checks whether data is modified
-        print(result_difference)
         if result_difference != {}:
             # Send Report if some data changes detected
             email_list = []
             # Generate Email List
             [email_list.append(r.email) for r in data_list.site.email_recipients.all()]
-            print(email_list)
+            print("Sending Emails to -> %s" % email_list)
             # Send Email Report
             alert_email_report(
                 dict([
@@ -139,4 +139,8 @@ def alert_email_report(data_manifest):
         # todo: more specific Error handling
     except IndexError:
         print('Something went wrong')
+    except requests.exceptions.ConnectionError:
+        print('Connection Error')
+    except urllib3.exceptions.MaxRetryError:
+        print('Max retries reached.')
 
