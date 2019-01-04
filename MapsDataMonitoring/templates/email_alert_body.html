@@ -18,14 +18,16 @@
     </style>
 </head>
 <body>
+{% autoescape off %}
 <p>
     Someone has recently made an edit to your Monitored Site.
     Please insure that the below are correct.
 </p>
 <p>
-    {{ rd_manifest.data|data_to_html }}
+    {{ rd_manifest.data|data_to_html_diff:rc_manifest.data }}
 </p>
 
+{% endautoescape %}
 <hr>
 <p>
     UID Data Reference Used: <b>[{{ rd_manifest.uid }} - {{ rd_manifest.uid }}]</b>
