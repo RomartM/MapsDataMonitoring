@@ -132,8 +132,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'kid.mediante@letithelp.org'
-EMAIL_HOST_PASSWORD = '(edEND4f+EghWKD59@]`DeR)'
+EMAIL_HOST_USER = 'your_email@mail.com'
+EMAIL_HOST_PASSWORD = 'your_email_password'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -142,4 +142,4 @@ EMAIL_HOST_PASSWORD = '(edEND4f+EghWKD59@]`DeR)'
 STATIC_URL = '/static/'
 
 # System Version
-APP_VERSION = "0.2.dev1"
+APP_VERSION = "0.3.beta1"

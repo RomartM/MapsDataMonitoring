@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.conf.urls import url, include
 
 urlpatterns = [
-    url(r'^monitor/', include('monitor.urls')),
     url(r'^monitor/statuscheck/', include('celerybeat_status.urls')),
     url(r'^admin/', admin.site.urls)
 ]
