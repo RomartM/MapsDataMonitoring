@@ -1,3 +1,7 @@
+"""
+ Intended for functionality tests
+ (Should Only Exists on Dev Version
+"""
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import DataSet, SiteManifest, DataReport

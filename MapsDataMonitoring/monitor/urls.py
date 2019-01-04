@@ -8,5 +8,5 @@ app_name = "monitor"
 
 urlpatterns = [
     path('query', views.do_query, name="crawl"),
-    path('test', views.test, name="test")
+    path('test', views.test, name="test") # Removed on non Dev Versions
 ]
