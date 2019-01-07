@@ -50,7 +50,7 @@ EMAIL_HOST_PASSWORD = 'your_email_password'
 Run Server
 
 ```sh
-$ ./runserver.sh
+$ ./run_server.sh
 ```
 
 To access the server goto http://localhost:8000/admin
