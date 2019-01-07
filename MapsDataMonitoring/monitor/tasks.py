@@ -36,30 +36,30 @@ def gmap_data_query(site_id):
         data_list = data_obj.latest('timestamp')
     # DataSet Entry Response Reserves
     stat = ""
-    # Loop all site list
-    for data in site_list:
-        # Google API Place request pattern
-        url = "%s://%s/maps/api/place/details/json?placeid=%s&key=%s" % \
-              (str(data.protocol).lower(),
-               str(data.domain).lower(),
-               data.place_id,
-               data.api_key)
-        # Fetch JSON Data
-        dict_data = requests.get(url).json()
-        # Catch Error when API became busted
-        try:
-            # Remove unnecessary dynamic data
-            [i.pop('photo_reference') for i in dict_data.get('result').get('photos')]
-        except AttributeError:
-            return print(str('Google Maps API Usage Error: %s' % dict_data.get('status')))
-        except ConnectionError:
-            return print(str('Failed Contacting Google API Servers'))
-        # Create DataSet Entry
-        stat = DataSet.objects.create(
-            uid=str(uuid4()),
-            data=json.dumps(dict_data.get('result')),
-            site=SiteManifest.objects.get(pk=1)
-        )
+    # Select first DataSet and Start Query
+    data = site_list.first()
+    # Google API Place request pattern
+    url = "%s://%s/maps/api/place/details/json?placeid=%s&key=%s" % \
+          (str(data.protocol).lower(),
+           str(data.domain).lower(),
+           data.place_id,
+           data.api_key)
+    # Fetch JSON Data
+    dict_data = requests.get(url).json()
+    # Catch Error when API became busted
+    try:
+        # Remove unnecessary dynamic data
+        [i.pop('photo_reference') for i in dict_data.get('result').get('photos')]
+    except AttributeError:
+        return print(str('Google Maps API Usage Error: %s' % dict_data.get('status')))
+    except ConnectionError:
+        return print(str('Failed Contacting Google API Servers'))
+    # Create DataSet Entry
+    stat = DataSet.objects.create(
+        uid=str(uuid4()),
+        data=json.dumps(dict_data.get('result')),
+        site=SiteManifest.objects.get(pk=1)
+    )
     # Executes data report logger and deploy changes detection algo
     response = data_report_logger(data_list, data_obj)
     # Print Response and DataSet ID to console
