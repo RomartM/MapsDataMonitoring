@@ -18,21 +18,21 @@ import requests
 import json
 
 
-
 @task()
-def gmap_data_query():
+def gmap_data_query(site_id):
+    print("SID [%s] Working..." % site_id)
     """
     Description: Default Task for Google Maps Places Data Monitoring Query
     """
-    # Fetch all site list
-    site_list = SiteManifest.objects.all()
+    # Fetch site by return argument site_id
+    site_list = SiteManifest.objects.filter(pk=site_id)
     # Call DataSet Model Objects
     data_obj = DataSet.objects
     # DataSet List Reserves
     data_list = None
     # Verifies DataSet Model is not empty
     if data_obj.exists():
-        # Sort DataSet by lates timestamp
+        # Sort DataSet by latest timestamp
         data_list = data_obj.latest('timestamp')
     # DataSet Entry Response Reserves
     stat = ""
