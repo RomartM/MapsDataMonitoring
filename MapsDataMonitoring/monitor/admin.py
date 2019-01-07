@@ -1,5 +1,9 @@
 from django.contrib import admin
 from .models import DataSet, SiteManifest, DataReport, EmailList
+import sys
+from . import mod_celery_admin
+
+sys.modules["django_celery_beat.admin"] = mod_celery_admin
 
 
 # Alter Django default admin name
