@@ -2,6 +2,10 @@ import json
 
 from django.db import models
 from django.utils import timezone
+import sys
+from . import mod_celery_model
+
+sys.modules["django_celery_beat.models"] = mod_celery_model
 
 
 class DataSet(models.Model):
