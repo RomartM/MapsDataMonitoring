@@ -38,7 +38,7 @@ class SiteManifest(models.Model):
     Data Model for Site Information intended for query purpose
     """
     name = models.CharField(max_length=120)
-    email_recipients = models.ManyToManyField(EmailList, help_text="List of emails for site data changes alert", null=True)
+    email_recipients = models.ManyToManyField(EmailList, help_text="List of emails for site data changes alert")
     protocol = models.CharField(max_length=10, choices=(
         ('HTTP', 'http'),
         ('HTTPS', 'https'),
