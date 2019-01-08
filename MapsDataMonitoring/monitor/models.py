@@ -2,10 +2,26 @@ import json
 
 from django.db import models
 from django.utils import timezone
-import sys
-from . import mod_celery_model
+from django.utils.translation import ugettext_lazy as _
+from django_celery_beat.models import PeriodicTask
 
-sys.modules["django_celery_beat.models"] = mod_celery_model
+
+class SchedulePeriodicTask(PeriodicTask):
+    """
+    Inherit Celery Periodic Task with custom fields
+    """
+    site = models.ForeignKey("SiteManifest", on_delete=models.CASCADE,
+                             verbose_name=_('site'),
+                             help_text=_('Place/ Establishment to schedule'))
+
+    def save(self, *args, **kwargs):
+        self.exchange = self.exchange or None
+        self.routing_key = self.routing_key or None
+        self.queue = self.queue or None
+        self.args = "[\"%s\"]" % str(self.site.pk)
+        if not self.enabled:
+            self.last_run_at = None
+        super(PeriodicTask, self).save(*args, **kwargs)
 
 
 class DataSet(models.Model):
@@ -75,3 +91,4 @@ class DataReport(models.Model):
             return "%s - [ %s ]" % (self.difference, "Some Data had been Modified")
         else:
             return "No data have been modified"
+
