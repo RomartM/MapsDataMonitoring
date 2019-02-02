@@ -1,6 +1,6 @@
 # Google Maps Data Monitoring
 
-Monitor Places, and Establishement Information on background. Get notified via email when someone updated the place information.
+Monitor Places, and Establishment Information on the background. Get notified via email when someone updated the place information.
 
 ### Installation
 
